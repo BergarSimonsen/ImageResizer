@@ -1,0 +1,10 @@
+all: dir java
+
+dir:
+	mkdir -p -- "build"
+
+java:
+	javac com/simonsen/imageresizer/ImageResizer.java -d build/
+
+clean:
+	rm -r build/*

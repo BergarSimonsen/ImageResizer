@@ -1,0 +1,41 @@
+package com.simonsen.imageresizer;
+import java.io.*;
+import com.simonsen.imageresizer.model.*;
+import com.simonsen.imageresizer.controller.*;
+import com.simonsen.imageresizer.io.*;
+
+public class ImageResizer {
+    private static IO io;
+    private static ImageController ic;
+    private static File pwd;
+    private static int scale;
+    
+    private static File[] files;
+    private static CustomImage[] images;
+    private static CustomImage[] resizedImages;
+    
+    public static void main(String[] args) {
+	try {
+	    if( args.length > 0 ) scale = Integer.parseInt( args[0] );
+	    else scale = 40; // 40 is default
+	    
+	    // Set pwd to the current directory
+	    pwd = new File( "" ).getCanonicalFile();
+	    ic = new ImageController( scale );
+	    io = new IO( pwd, ic );
+	    
+	    files = io.readFiles();
+	    if( files != null ) {
+		images = ic.readImages( files );
+		if( images != null ) {
+		    resizedImages = ic.resizeImages( images );
+		    if( resizedImages != null ) {
+			io.writeImages( resizedImages );
+		    }
+		}
+	    }
+	} catch ( IOException e ) {
+	    e.printStackTrace();
+	}
+    }
+}
